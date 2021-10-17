@@ -1,0 +1,14 @@
+.top-nav
+{
+    background-color: black;
+    padding:2%;
+    font-display:initial;
+}
+
+.nav-item{
+    padding: 1%;
+    color:lemonchiffon;
+    font-style: italic;
+    font-family:monospace;
+    font-size: 20px;
+}

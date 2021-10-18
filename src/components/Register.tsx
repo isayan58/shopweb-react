@@ -1,8 +1,13 @@
 import React from "react";
 import { Button, Form } from "react-bootstrap";
 import Card from "react-bootstrap/esm/Card";
+import { useHistory, RouteComponentProps, withRouter } from "react-router-dom";
+interface Props {}
+interface SignUpApiResponse{
+  message?: string;
+}
 
-const Register = () => {
+const Register = (props: RouteComponentProps<Props>) => {
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -22,6 +27,13 @@ const Register = () => {
           password: password,
         }),
       });
+      const responseData : SignUpApiResponse =  await response.json();
+      console.log(responseData.message);
+      if(responseData.message === "User created")
+      {
+        alert(responseData.message);
+        props.history.push("/sign-in");
+      }
     } catch (err) {
       console.log(err);
     }
@@ -89,4 +101,4 @@ const Register = () => {
     </Card>
   );
 };
-export default Register;
+export default withRouter(Register);

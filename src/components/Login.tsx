@@ -1,16 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import Card from "react-bootstrap/esm/Card";
 import { useHistory, RouteComponentProps, withRouter } from "react-router-dom";
+import {withCookies} from "react-cookie";
 interface Props {}
 interface LoginApiResponse{
   message?: string;
+  token: string;
 }
-const Login = (props: RouteComponentProps<Props>) =>
+const Login = (props: any) =>
 {
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [authResponse, setAuthResponse] =useState<LoginApiResponse>();
   const history = useHistory();
   // console.log("-1");
 
@@ -33,7 +36,13 @@ const Login = (props: RouteComponentProps<Props>) =>
       console.log(responseData.message);
       if(responseData.message === "Logged in.")
       {
+        props.cookies.set("Authorization", responseData.token,
+        {
+          path:"/"
+        });
+        console.log("Message token:", responseData.token);
         alert(responseData.message);
+        setAuthResponse(responseData);
         props.history.push("/");
       } else{
         alert("User entered wrong password.");
@@ -78,4 +87,4 @@ const Login = (props: RouteComponentProps<Props>) =>
       );
     }
 
-export default withRouter(Login);
+export default withCookies(Login);

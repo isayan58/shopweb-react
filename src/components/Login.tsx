@@ -1,26 +1,31 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import Card from "react-bootstrap/esm/Card";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory, RouteComponentProps, withRouter } from "react-router-dom";
 import {withCookies} from "react-cookie";
+import shopReducer from "../Store/shopReducer";
+import { actionTypes } from '../../src/Store/actionTypes';
+import {State} from '../../src/Store/rootReducer';
+import { login, logout } from '../../src/Store/actionCreators';
 interface Props {}
 interface LoginApiResponse{
   message?: string;
   token: string;
 }
+
 const Login = (props: any) =>
 {
+      const [email, setEmail] = React.useState("");
+      const [password, setPassword] = React.useState("");
+      //const [authResponse, setAuthResponse] =useState<LoginApiResponse>();
+      const history = useHistory();
+      const dispatch = useDispatch();
+      const shopping = useSelector((state: State) => state.shopping);
 
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [authResponse, setAuthResponse] =useState<LoginApiResponse>();
-  const history = useHistory();
-  // console.log("-1");
 
   const handleChange = async () => {
-    // console.log("1");
     try {
-      // console.log("2");
       const response = await fetch(
         "http://localhost:8000/authenticateUser",
         {
@@ -33,7 +38,7 @@ const Login = (props: any) =>
         }
       );
       const responseData: LoginApiResponse = await response.json();
-      console.log(responseData.message);
+      console.log("Token : ",responseData.message);
       if(responseData.message === "Logged in.")
       {
         props.cookies.set("Authorization", responseData.token,
@@ -42,12 +47,12 @@ const Login = (props: any) =>
         });
         console.log("Message token:", responseData.token);
         alert(responseData.message);
-        setAuthResponse(responseData);
         props.history.push("/");
+        //props.dispatch(login(responseData.token));
+        dispatch(login(responseData.token));
       } else{
         alert("User entered wrong password.");
       }
-      // history.push("/");
     } catch (err) {
       console.log(err);
     }

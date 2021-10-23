@@ -14,6 +14,7 @@ const Register = (props: RouteComponentProps<Props>) => {
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [password, setPassword] = React.useState("");
 
+
   const handleChange = async () => {
     try {
       const response = await fetch("http://localhost:8000/postUsers", {
@@ -95,7 +96,8 @@ const Register = (props: RouteComponentProps<Props>) => {
       <Form.Group className="mb-3" controlId="formBasicCheckbox">
         <Form.Check type="checkbox" label="Check me out" />
       </Form.Group>
-      <Button variant="primary" type="submit" onClick={handleChange}>
+      <Button variant="primary" type="submit" onClick={handleChange}
+      >
         Sign Up
       </Button>
     </Card>

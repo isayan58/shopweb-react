@@ -1,29 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import '../commonstyles/Header.css';
+import { actionTypes } from '/Users/sayanadhikary/Desktop/ReactDev/webshop/src/Store/actionTypes';
+import {State} from '/Users/sayanadhikary/Desktop/ReactDev/webshop/src/Store/rootReducer';
 import Cookies from 'js-cookie';
+import { logout } from '../../Store/actionCreators';
+import shopReducer from '../../Store/shopReducer';
 interface Props{}
-interface State{
-  token: any;
-}
 
-
-
-const Header = (props: any) => {
-  const state:State = {
-    token: Cookies.get("Authorization")
-  };
-  // const handleLogin =() =>
-  // {
-    // console.log("cookie1:",state.token);
-    state.token = Cookies.get("Authorization");
-    // console.log("cookie2:",state.token);
+  const Header = (props: any) => {
+  const shopping = useSelector((state: State) => state.shopping);
+  const dispatch = useDispatch();
     const handleLogOut = () =>
     {
       Cookies.remove("Authorization");
-      state.token = Cookies.get("Authorization");
+      dispatch(logout());
     }
   return (
   <div className="top-nav">
@@ -37,7 +31,7 @@ const Header = (props: any) => {
       Contact
     </Link>
     {
-      !state.token?
+      (shopping.authToken==="")?
       (
       <>
     <Link to="/sign-in" className="nav-item">
@@ -48,7 +42,7 @@ const Header = (props: any) => {
     </Link>
     </>
     ):(
-    <Link to="/sign-in" className="nav-item" onClick = {handleLogOut}>
+    <Link to="/sign-in" className="nav-item" onClick={handleLogOut}>
           Sign Out
     </Link>
       )}

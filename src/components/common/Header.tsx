@@ -19,6 +19,7 @@ interface Props{}
       Cookies.remove("Authorization");
       dispatch(logout());
     }
+    console.log("Token : ",shopping.authToken);
   return (
   <div className="top-nav">
     <Link className="nav-item" to="/">
@@ -45,6 +46,15 @@ interface Props{}
     <Link to="/sign-in" className="nav-item" onClick={handleLogOut}>
           Sign Out
     </Link>
+      )}
+      {
+      !(shopping.authToken==="")?
+      (
+      <>
+<h4 className="nav-item-name"> Hello, {shopping.name}</h4>
+    </>
+    ):(
+    <div></div>
       )}
   </div>
   )};

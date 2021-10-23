@@ -12,16 +12,14 @@ interface Props {}
 interface LoginApiResponse{
   message?: string;
   token: string;
+  name: string;
 }
 
 const Login = (props: any) =>
 {
       const [email, setEmail] = React.useState("");
       const [password, setPassword] = React.useState("");
-      //const [authResponse, setAuthResponse] =useState<LoginApiResponse>();
-      const history = useHistory();
       const dispatch = useDispatch();
-      const shopping = useSelector((state: State) => state.shopping);
 
 
   const handleChange = async () => {
@@ -38,7 +36,7 @@ const Login = (props: any) =>
         }
       );
       const responseData: LoginApiResponse = await response.json();
-      console.log("Token : ",responseData.message);
+      console.log("LoginAPI: ",responseData);
       if(responseData.message === "Logged in.")
       {
         props.cookies.set("Authorization", responseData.token,
@@ -46,10 +44,8 @@ const Login = (props: any) =>
           path:"/"
         });
         console.log("Message token:", responseData.token);
-        alert(responseData.message);
         props.history.push("/");
-        //props.dispatch(login(responseData.token));
-        dispatch(login(responseData.token));
+        dispatch(login(responseData.token, responseData.name));
       } else{
         alert("User entered wrong password.");
       }

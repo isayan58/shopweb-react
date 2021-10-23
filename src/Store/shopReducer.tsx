@@ -4,22 +4,23 @@ export interface State {
 }
 
 const initialState = {
-    authToken: ""
+    authToken: "",
+    name: ""
   };
 
   export type Action =
-  | { type: actionTypes.Login; authToken: string }
+  | { type: actionTypes.Login; authToken: string; name: string }
   | { type: actionTypes.Logout };
 
   const shopReducer = (state = initialState, action: Action) =>{
     console.log("Hit in shopReducer: ", action.type);
-    console.log("Hit in shopReducer: ", initialState.authToken);
     switch(action.type)
     {
       case actionTypes.Login:
         return{
           ...state,
-          authToken: action.authToken
+          authToken: action.authToken,
+          name: action.name
         };
         case actionTypes.Logout:
           return{
